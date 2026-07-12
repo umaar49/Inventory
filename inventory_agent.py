@@ -17,7 +17,7 @@ from email.mime.text import MIMEText
 
 load_dotenv()
 api_key = os.getenv("tavil")
-tavily_api_key = api_key.replace("\n", "").replace(" ", "").strip("'\"") if tavily_raw else None
+tavily_api_key = api_key.replace("\n", "").replace(" ", "").strip("'\"") if api_key else None
 client = TavilyClient(tavily_api_key)
 
 groq_raw = os.getenv("GROQ_API_KEY")
