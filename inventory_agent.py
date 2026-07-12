@@ -17,9 +17,13 @@ from email.mime.text import MIMEText
 
 load_dotenv()
 api_key = os.getenv("tavil")
-client = TavilyClient(api_key)
+tavily_api_key = api_key.replace("\n", "").replace(" ", "").strip("'\"") if tavily_raw else None
+client = TavilyClient(tavily_api_key)
+
+groq_raw = os.getenv("GROQ_API_KEY")
+groq_api_key = groq_raw.replace("\n", "").replace(" ", "").strip("'\"") if groq_raw else None
 grok_client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
+    api_key=os.environ.get(groq_api_key),
 )
 model_name = "gemini-3.1-flash-lite"
 
