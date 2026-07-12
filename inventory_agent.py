@@ -16,10 +16,10 @@ import smtplib
 from email.mime.text import MIMEText
 
 load_dotenv()
-api_key = os.getenv(tavil)
+api_key = os.getenv("tavil")
 client = TavilyClient(api_key)
 grok_client = Groq(
-    api_key=os.environ.get(GROQ_API_KEY),
+    api_key=os.environ.get("GROQ_API_KEY"),
 )
 model_name = "gemini-3.1-flash-lite"
 
