@@ -1,3 +1,14 @@
+"""
+app.py — Streamlit interface for the Inventory + Supplier Agent.
+
+This file contains NO business logic of its own — every extraction,
+stock-check, email-drafting, supplier-search and email-sending call goes
+straight through the functions/graph defined in inventory_agent.py
+(your original code). This file only renders the UI and drives the
+LangGraph agent step by step, replacing the old terminal input() prompts
+with buttons and forms.
+"""
+
 import os
 import uuid
 import tempfile
@@ -97,6 +108,7 @@ defaults = {
     "pending_input_type": None,
     "result": None,
     "config": None,
+    "_send_result": None,
 }
 for k, v in defaults.items():
     if k not in st.session_state:
@@ -106,6 +118,7 @@ for k, v in defaults.items():
 def new_thread():
     st.session_state.thread_id = str(uuid.uuid4())
     st.session_state.config = {"configurable": {"thread_id": st.session_state.thread_id}}
+    st.session_state["_send_result"] = None
 
 
 def reset_flow():
@@ -114,12 +127,26 @@ def reset_flow():
     st.session_state.pending_user_input = None
     st.session_state.pending_input_type = None
     st.session_state.result = None
+    st.session_state["_send_result"] = None
 
 
 # ----------------------------------------------------------------------
 # Sidebar navigation
 # ----------------------------------------------------------------------
 page = st.sidebar.radio("Navigate", ["🤖 Smart Agent", "📊 Dashboard", "➕ Add Product"], index=0)
+
+with st.sidebar:
+    st.markdown("---")
+    st.caption("Environment check")
+    env_map = {
+        "Gemini (api_key)": os.getenv("api_key"),
+        "Tavily (tavil)": os.getenv("tavil"),
+        "Groq (GROQ_API_KEY)": os.getenv("GROQ_API_KEY"),
+        "SMTP (SENDER_EMAIL)": os.getenv("SENDER_EMAIL"),
+        "SMTP (SENDER_PASSWORD)": os.getenv("SENDER_PASSWORD"),
+    }
+    for name, val in env_map.items():
+        st.markdown(f"{'✅' if val else '⭕'} {name}")
 
 # ----------------------------------------------------------------------
 # DASHBOARD
