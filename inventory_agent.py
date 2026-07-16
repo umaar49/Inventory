@@ -226,13 +226,6 @@ def _seed_sample_data_if_empty():
     count = cursor.fetchone()[0]
     conn.close()
 
-    if count == 0:
-        add_product("Phenyle", "3 LTR", 30, "phenylesupplier@gmail.com", "John")
-        add_product("Bleach", "5 LTR", 15)
-        add_product("Detergent", "2 kg", 25, "detergentsupplier@gmail.com", "Wick")
-        add_product("Dettol", "100 g", 5, "ug@gmail.com", "Eric")
-
-
 create_database()
 _seed_sample_data_if_empty()
 
