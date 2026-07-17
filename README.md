@@ -18,7 +18,7 @@ If the product isn't in the database yet, it asks you to register it first, so n
 
 ## Demo
 
-[Add your LinkedIn / YouTube video link here]
+- https://inventory-system-management.streamlit.app/
 
 ## Tech stack
 
