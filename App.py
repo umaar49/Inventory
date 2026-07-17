@@ -119,19 +119,6 @@ def reset_flow():
 
 page = st.sidebar.radio("Navigate", ["🤖 Smart Agent", "📊 Dashboard", "➕ Add Product"], index=0)
 
-with st.sidebar:
-    st.markdown("---")
-    st.caption("Environment check")
-    env_map = {
-        "Gemini (api_key)": os.getenv("api_key"),
-        "Tavily (tavil)": os.getenv("tavil"),
-        "Groq (GROQ_API_KEY)": os.getenv("GROQ_API_KEY"),
-        "SMTP (SENDER_EMAIL)": os.getenv("SENDER_EMAIL"),
-        "SMTP (SENDER_PASSWORD)": os.getenv("SENDER_PASSWORD"),
-    }
-    for name, val in env_map.items():
-        st.markdown(f"{'✅' if val else '⭕'} {name}")
-
 # DASHBOARD
 
 if page == "📊 Dashboard":
