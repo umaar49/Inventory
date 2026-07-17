@@ -1,25 +1,12 @@
-"""
-app.py — Streamlit interface for the Inventory + Supplier Agent.
-
-This file contains NO business logic of its own — every extraction,
-stock-check, email-drafting, supplier-search and email-sending call goes
-straight through the functions/graph defined in inventory_agent.py
-(your original code). This file only renders the UI and drives the
-LangGraph agent step by step, replacing the old terminal input() prompts
-with buttons and forms.
-"""
 
 import os
 import uuid
 import tempfile
-
 import streamlit as st
-
 import inventory_agent as backend
 
-# ----------------------------------------------------------------------
 # Page setup
-# ----------------------------------------------------------------------
+
 st.set_page_config(
     page_title="Inventory & Supplier Agent",
     page_icon="📦",
@@ -97,12 +84,12 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ----------------------------------------------------------------------
+
 # Session state
-# ----------------------------------------------------------------------
+
 defaults = {
     "thread_id": None,
-    "stage": "idle",          # idle -> needs_registration -> running -> paused -> done
+    "stage": "idle",         
     "pending_extracted": None,
     "pending_user_input": None,
     "pending_input_type": None,
@@ -129,10 +116,8 @@ def reset_flow():
     st.session_state.result = None
     st.session_state["_send_result"] = None
 
-
-# ----------------------------------------------------------------------
 # Sidebar navigation
-# ----------------------------------------------------------------------
+
 page = st.sidebar.radio("Navigate", ["🤖 Smart Agent", "📊 Dashboard", "➕ Add Product"], index=0)
 
 with st.sidebar:
@@ -148,9 +133,8 @@ with st.sidebar:
     for name, val in env_map.items():
         st.markdown(f"{'✅' if val else '⭕'} {name}")
 
-# ----------------------------------------------------------------------
 # DASHBOARD
-# ----------------------------------------------------------------------
+
 if page == "📊 Dashboard":
     rows = backend.get_all_products()
 
@@ -198,9 +182,8 @@ if page == "📊 Dashboard":
             st.markdown(f"<span style='color:#94a3b8;font-size:.85rem'>Supplier: {s_name or '—'} · {s_email or 'no email on file'}</span>", unsafe_allow_html=True)
             st.divider()
 
-# ----------------------------------------------------------------------
 # ADD PRODUCT
-# ----------------------------------------------------------------------
+
 elif page == "➕ Add Product":
     st.subheader("Add / Update a product")
     with st.form("manual_add_form"):
@@ -222,9 +205,8 @@ elif page == "➕ Add Product":
                                  s_email.strip() or None, s_name.strip() or None)
             st.success(f"Saved **{name}** ({size}) — {qty} units.")
 
-# ----------------------------------------------------------------------
 # SMART AGENT
-# ----------------------------------------------------------------------
+
 elif page == "🤖 Smart Agent":
     st.subheader("Ask the agent about a product")
     st.caption("Type a request in plain English, or upload a photo of a product/label. "
